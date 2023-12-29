@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Scroll Aniamtion | JavaScript</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+
+      body {
+        margin: 0;
+        font-family: "Outfit", sans-serif;
+        height: 200vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #191919;
+      }
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #191919;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 1rem;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      .animated-text {
+        color: #adabab56;
+        font-size: 2em;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: wrap;
+        overflow: hidden;
+        width: 50%;
+        transition: color 0.9s ease-in-out;
+      }
+
+      .white-text {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="animated-text" id="textContainer">
+      Programmatic animation in web development involves using JavaScript code
+      to dynamically change how elements look or behave on a webpage. By
+      altering properties like size or position over time, developers create
+      engaging and interactive effects.
+    </p>
+
+    <script>
+      window.addEventListener("scroll", function () {
+        var scrollPosition = window.scrollY;
+        var textContainer = document.getElementById("textContainer");
+        var words = textContainer.textContent.split(" ");
+        var totalCharacters = textContainer.textContent.length;
+        var thresholds = Array.from(
+          { length: words.length },
+          (_, i) => (i + 1) * (totalCharacters / words.length)
+        );
+        var highlightedWord = 0;
+        for (var i = thresholds.length - 1; i >= 0; i--) {
+          if (scrollPosition > thresholds[i]) {
+            highlightedWord = i + 1;
+            break;
+          }
+        }
+
+        var formattedText = words.map(function (word, index) {
+          var shouldHighlight = index < highlightedWord;
+          return shouldHighlight
+            ? '<span class="white-text">' + word + "</span>"
+            : word;
+        });
+
+        textContainer.innerHTML = formattedText.join(" ");
+      });
+    </script>
+  </body>
+</html>
